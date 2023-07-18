@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HTR</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    
+    h1 {
+      margin-top: 50px;
+    }
+    
+    #image-preview {
+      margin-top: 30px;
+    }
+    
+    #save-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    #save-button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Handwritten Text Recognition</h1>
+  <input type="file" id="image-input" accept="image/*">
+  <div id="image-preview"></div>
+  <form action="{{ url_for('predict') }}" method="post">
+  <button id="save-button">Extract Text</button>
+  </form>
+
+  <script>
+    document.getElementById("image-input").addEventListener("change", function(event) {
+      var file = event.target.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        var imagePreview = document.getElementById("image-preview");
+        imagePreview.innerHTML = '<img src="' + e.target.result + '" alt="Image Preview" width="300">';
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById("save-button").addEventListener("click", function() {
+      var imageElement = document.querySelector("#image-preview img");
+      var link = document.createElement("a");
+      link.href = imageElement.src;
+      link.download = "HTR_Image_Download.png";
+      link.click();
+    });
+  </script>
+</body>
+</html>
